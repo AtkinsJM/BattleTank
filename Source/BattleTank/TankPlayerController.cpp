@@ -17,7 +17,25 @@ void ATankPlayerController::BeginPlay()
 	}
 }
 
+// Called every frame
+void ATankPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	AimTowardsCrosshair();
+}
+
 ATank* ATankPlayerController::GetPlayerTank() const
 {	
 	return(Cast<ATank>(GetPawn()));
+}
+
+void ATankPlayerController::AimTowardsCrosshair()
+{
+	if (!GetPlayerTank) 
+	{
+		return;
+	}
+	//Get world location of linetrace from UI crosshair
+	//If linetrace hits something
+		//Aim barrel at point
 }

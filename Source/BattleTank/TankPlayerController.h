@@ -20,6 +20,11 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	ATank* GetPlayerTank() const;
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
+private:
+	ATank* GetPlayerTank() const;
+	//Moves tank barrel to point towards crosshair
+	void AimTowardsCrosshair();
 };
