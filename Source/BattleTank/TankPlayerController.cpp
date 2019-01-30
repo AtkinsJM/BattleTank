@@ -2,6 +2,8 @@
 
 #include "TankPlayerController.h"
 
+#define OUT
+
 // Called when the game starts or when spawned
 void ATankPlayerController::BeginPlay()
 {
@@ -31,11 +33,23 @@ ATank* ATankPlayerController::GetPlayerTank() const
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!GetPlayerTank) 
+	if (!GetPlayerTank()) {	return;	}
+	FVector OutHitLocation; //Out parameter
+	if (GetAimRayHitLocation(OUT OutHitLocation))
 	{
-		return;
+		UE_LOG(LogTemp, Warning, TEXT("Hit location: %s"), *OutHitLocation.ToString());
+		//TODO Aim barrel at point
 	}
-	//Get world location of linetrace from UI crosshair
-	//If linetrace hits something
-		//Aim barrel at point
+}
+
+bool ATankPlayerController::GetAimRayHitLocation(FVector& OutHitLocation) const
+{
+	int32 ViewportSizeX, ViewportSizeY;
+	GetViewportSize(OUT ViewportSizeX, OUT ViewportSizeY);
+	//Get screen position of crosshair
+	FVector2D ScreenPosition = FVector2D(ViewportSizeX * CrosshairPosX, ViewportSizeY * CrosshairPosY);
+	//Deproject screen position to world
+	//Linetrace along look direction and get hit
+
+	return true;
 }

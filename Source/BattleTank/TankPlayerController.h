@@ -25,6 +25,11 @@ public:
 
 private:
 	ATank* GetPlayerTank() const;
+	UPROPERTY(EditAnywhere)
+		float CrosshairPosX = 0.5f;
+	UPROPERTY(EditAnywhere)
+		float CrosshairPosY = 0.333f;
 	//Moves tank barrel to point towards crosshair
 	void AimTowardsCrosshair();
+	bool GetAimRayHitLocation(FVector& OutHitLocation) const;
 };
