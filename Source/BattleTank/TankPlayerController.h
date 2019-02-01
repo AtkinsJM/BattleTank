@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -29,7 +29,10 @@ private:
 		float CrosshairPosX = 0.5f;
 	UPROPERTY(EditAnywhere)
 		float CrosshairPosY = 0.333f;
+	UPROPERTY(EditAnywhere)
+		float LineTraceRange = 1000000.0f;
 	//Moves tank barrel to point towards crosshair
 	void AimTowardsCrosshair();
-	bool GetAimRayHitLocation(FVector& OutHitLocation) const;
+	bool GetAimRayHitLocation(OUT FVector& HitLocation) const;
+	bool GetLookVectorHitLocation(FVector WorldLocation, FVector LookDirection, OUT FVector& HitLocation) const;
 };

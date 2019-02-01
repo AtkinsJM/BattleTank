@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
+#include "Engine/World.h"
 
 #define OUT
 
@@ -34,22 +35,36 @@ ATank* ATankPlayerController::GetPlayerTank() const
 void ATankPlayerController::AimTowardsCrosshair()
 {
 	if (!GetPlayerTank()) {	return;	}
-	FVector OutHitLocation; //Out parameter
-	if (GetAimRayHitLocation(OUT OutHitLocation))
+	FVector HitLocation; //Out parameter
+	if (GetAimRayHitLocation(OUT HitLocation))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Hit location: %s"), *OutHitLocation.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("Hit location: %s"), *HitLocation.ToString());
 		//TODO Aim barrel at point
 	}
 }
 
-bool ATankPlayerController::GetAimRayHitLocation(FVector& OutHitLocation) const
+bool ATankPlayerController::GetAimRayHitLocation(OUT FVector& HitLocation) const
 {
 	int32 ViewportSizeX, ViewportSizeY;
 	GetViewportSize(OUT ViewportSizeX, OUT ViewportSizeY);
 	//Get screen position of crosshair
 	FVector2D ScreenPosition = FVector2D(ViewportSizeX * CrosshairPosX, ViewportSizeY * CrosshairPosY);
-	//Deproject screen position to world
-	//Linetrace along look direction and get hit
-
-	return true;
+	FVector LineStart;
+	FVector LookDirection; 
+	//Deproject screen position to world and get world location and look direction for ray
+	if (DeprojectScreenPositionToWorld(ScreenPosition.X, ScreenPosition.Y, OUT LineStart, OUT LookDirection))
+	{
+		//Linetrace along look direction and get hit
+		FHitResult HitResult;
+		FVector LineEnd = LineStart + (LookDirection * LineTraceRange);
+		if (GetWorld()->LineTraceSingleByChannel(HitResult, LineStart, LineEnd, ECC_Visibility))
+		{
+			HitLocation = HitResult.Location;
+			return true;
+		}
+		HitLocation = FVector(0);
+		return false;
+	};
+	UE_LOG(LogTemp, Warning, TEXT("Unable to deproject screen position to world."));
+	return false;
 }
