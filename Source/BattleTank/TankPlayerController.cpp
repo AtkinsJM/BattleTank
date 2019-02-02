@@ -38,8 +38,8 @@ void ATankPlayerController::AimTowardsCrosshair()
 	FVector HitLocation; //Out parameter
 	if (GetAimRayHitLocation(OUT HitLocation))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Hit location: %s"), *HitLocation.ToString());
-		//TODO Aim barrel at point
+		//Aim barrel at point
+		GetPlayerTank()->AimAt(HitLocation);
 	}
 }
 
