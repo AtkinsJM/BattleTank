@@ -67,8 +67,19 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	if (bHasLaunchVelocity)
 	{
 		FVector LaunchDirection = LaunchVelocity.GetSafeNormal();
+		MoveBarrel(LaunchDirection);
 		UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s from %s"), *TankName, *LaunchDirection.ToString(), *(Barrel->GetComponentLocation().ToString()));
 	}
 
 }
 
+
+void UTankAimingComponent::MoveBarrel(FVector LaunchDirection)
+{
+	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
+	FRotator LaunchRotator = LaunchDirection.Rotation();
+	UE_LOG(LogTemp, Warning, TEXT("Barrel rotator: %s, Launch rotator: %s"), *BarrelRotator.ToString(), *LaunchRotator.ToString());
+	FRotator DeltaRotator = LaunchRotator - BarrelRotator;
+	//Get individual component of launch direction unit vector
+	//Set rotation components to match
+}
