@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAimingComponent.h"
+#include "TankBarrel.h"
 #include "Kismet/GameplayStatics.h"
 #include "Math/Vector.h"
 #include "Components/StaticMeshComponent.h"
@@ -37,7 +38,7 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 
 
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent * BarrelToSet)
+void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	Barrel = BarrelToSet;
 }
@@ -80,6 +81,5 @@ void UTankAimingComponent::MoveBarrel(FVector LaunchDirection)
 	FRotator LaunchRotator = LaunchDirection.Rotation();
 	UE_LOG(LogTemp, Warning, TEXT("Barrel rotator: %s, Launch rotator: %s"), *BarrelRotator.ToString(), *LaunchRotator.ToString());
 	FRotator DeltaRotator = LaunchRotator - BarrelRotator;
-	//Get individual component of launch direction unit vector
-	//Set rotation components to match
+	Barrel->Elevate(5.0f);
 }
