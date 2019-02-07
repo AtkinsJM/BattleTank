@@ -10,15 +10,7 @@
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	ATank* PlayerTank = GetPlayerTank();
-	if (PlayerTank)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Player possessed tank: %s"), *(PlayerTank->GetName()));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("No player possessed tank"));
-	}
+	PlayerTank = Cast<ATank>(GetPawn());
 }
 
 // Called every frame
@@ -28,19 +20,14 @@ void ATankPlayerController::Tick(float DeltaTime)
 	AimTowardsCrosshair();
 }
 
-ATank* ATankPlayerController::GetPlayerTank() const
-{	
-	return(Cast<ATank>(GetPawn()));
-}
-
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!GetPlayerTank()) {	return;	}
+	if (!PlayerTank) {	return;	}
 	FVector HitLocation; //Out parameter
 	if (GetAimRayHitLocation(OUT HitLocation))
 	{
 		//Aim barrel at point
-		GetPlayerTank()->AimAt(HitLocation);
+		PlayerTank->AimAt(HitLocation);
 	}
 }
 

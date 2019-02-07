@@ -25,7 +25,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	ATank* GetPlayerTank() const;
+	ATank* PlayerTank = nullptr;
 	UPROPERTY(EditAnywhere)
 		float CrosshairPosX = 0.5f;
 	UPROPERTY(EditAnywhere)
