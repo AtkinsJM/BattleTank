@@ -26,11 +26,11 @@ public:
 
 private:
 	ATank* PlayerTank = nullptr;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 		float CrosshairPosX = 0.5f;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 		float CrosshairPosY = 0.333f;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 		float LineTraceRange = 1000000.0f;
 	//Moves tank barrel to point towards crosshair
 	void AimTowardsCrosshair();

@@ -21,7 +21,6 @@ void ATankAIController::Tick(float DeltaTime)
 	if (PlayerTank)
 	{
 		//Move towards player until in range
-
 		//Aim at player
 		//TODO change to GetActorLocation? Check difference
 		AITank->AimAt(PlayerTank->GetTargetLocation());
