@@ -41,7 +41,7 @@ private:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
-		float LaunchSpeed = 10000.0f;
+		float LaunchSpeed = 7000.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 		TSubclassOf<AProjectile> ProjectileBP;
@@ -51,5 +51,5 @@ private:
 	float LastFireTime = 0;
 
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
-		float FireDelay = 1;
+		float FireDelay = 5;
 };

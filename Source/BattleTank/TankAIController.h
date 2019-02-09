@@ -25,4 +25,6 @@ private:
 	virtual void Tick(float DeltaTime) override;
 	ATank* AITank;
 	ATank* PlayerTank;
+
+	float AcceptanceRadius = 2000.0f;
 };

@@ -15,6 +15,9 @@ class BATTLETANK_API UTankMovementComponent : public UNavMovementComponent
 {
 	GENERATED_BODY()
 	
+protected:
+	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
+
 public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 		void Initialise(UTankTrack * LeftTrackToSet, UTankTrack * RightTrackToSet);
