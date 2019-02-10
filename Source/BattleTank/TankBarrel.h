@@ -18,10 +18,10 @@ public:
 	void Elevate(float ElevationDirection);
 
 private:
-	UPROPERTY(EditDefaultsOnly, Category = Setup)
-		float MaxDegsPerSecond = 20.0f;
-	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		float MaxDegsPerSecond = 30.0f;
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		float MaxPitch = 30.0f;	//Degrees
-	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		float MinPitch = 0.0f;	//Degrees
 };

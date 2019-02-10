@@ -18,6 +18,6 @@ public:
 	void Turn(float TurnDirection);
 
 private:
-	UPROPERTY(EditDefaultsOnly, Category = Setup)
-		float MaxDegsPerSecond = 20.0f;
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		float MaxDegsPerSecond = 30.0f;
 };

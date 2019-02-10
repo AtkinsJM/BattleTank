@@ -15,9 +15,9 @@ class BATTLETANK_API UTankTrack : public UStaticMeshComponent
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintCallable, Category = Input)
+	UFUNCTION(BlueprintCallable, Category = "Input")
 		void SetThrottle(float Throttle);
 
-	UPROPERTY(EditDefaultsOnly, Category = Movement)
-		float MaxDrivingForce = 80000000.0f;
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+		float MaxDrivingForce = 60000000.0f;
 };
