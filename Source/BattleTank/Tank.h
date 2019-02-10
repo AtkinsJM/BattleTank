@@ -30,24 +30,17 @@ protected:
 
 public:	
 	void AimAt(FVector HitLocation);
-	UFUNCTION(BlueprintCallable, Category = Setup)
-		void SetBarrelReference(UTankBarrel* BarrelToSet);
-	UFUNCTION(BlueprintCallable, Category = Setup)
-		void SetTurretReference(UTankTurret* TurretToSet);
 	UFUNCTION(BlueprintCallable)
 		void Fire();
 
 private:
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		float LaunchSpeed = 7000.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		TSubclassOf<AProjectile> ProjectileBP;
 
-	UTankBarrel* Barrel = nullptr;
+	//UTankBarrel* Barrel = nullptr;
 
 	float LastFireTime = 0;
 
