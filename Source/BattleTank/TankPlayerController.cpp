@@ -22,7 +22,7 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!PlayerTank) {	return;	}
+	if (!ensure(PlayerTank)) {	return;	}
 	FVector HitLocation; //Out parameter
 	if (GetAimRayHitLocation(OUT HitLocation))
 	{

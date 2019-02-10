@@ -18,7 +18,7 @@ void ATankAIController::BeginPlay()
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (PlayerTank)
+	if (ensure(PlayerTank))
 	{
 		//Move towards player until in range
 		MoveToActor

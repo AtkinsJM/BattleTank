@@ -4,7 +4,6 @@
 #include "TankBarrel.h"
 #include "Projectile.h"
 #include "TankAimingComponent.h"
-#include "TankMovementComponent.h"
 #include "GameFramework/Actor.h"
 
 // Sets default values
@@ -24,13 +23,15 @@ void ATank::BeginPlay()
 
 void ATank::AimAt(FVector HitLocation)
 {
+	if (!ensure(TankAimingComponent)) { return; }
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
 
 void ATank::Fire()
 {
+	if (!ensure(TankAimingComponent && TankAimingComponent->Barrel)) { return; }
 	bool bCanFire = (LastFireTime + FireDelay) < (GetWorld()->GetTimeSeconds());
-	if (TankAimingComponent->Barrel && bCanFire)
+	if (bCanFire)
 	{
 		//Spawn projectile at barrel socket
 		AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBP, TankAimingComponent->Barrel->GetSocketTransform(FName("Projectile")));

@@ -7,10 +7,7 @@
 #include "Tank.generated.h"
 
 //Forward declarations
-class UTankBarrel;
-class UTankTurret;
 class UTankAimingComponent;
-class UTankMovementComponent;
 class AProjectile;
 
 UCLASS()
@@ -39,9 +36,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		TSubclassOf<AProjectile> ProjectileBP;
-
-	//UTankBarrel* Barrel = nullptr;
-
+	
 	float LastFireTime = 0;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
