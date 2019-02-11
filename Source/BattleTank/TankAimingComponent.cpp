@@ -20,18 +20,26 @@ UTankAimingComponent::UTankAimingComponent()
 	{
 		ProjectileBP = Proj.Class;
 	}
-	PrimaryComponentTick.bCanEverTick = false;
-
-	// ...
+	PrimaryComponentTick.bCanEverTick = true;
 }
 
 // Called when the game starts
 void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	LastFireTime = GetWorld()->GetTimeSeconds();
+}
 
-	// ...
-	
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+{
+	if ((LastFireTime + FireDelay) > (GetWorld()->GetTimeSeconds()))
+	{
+		FiringState = EFiringState::Reloading;
+	}
+	else
+	{
+		FiringState = EFiringState::Aiming;
+	}
 }
 
 void UTankAimingComponent::Initialise(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet)
@@ -88,8 +96,7 @@ void UTankAimingComponent::MoveTurret(FVector LaunchDirection)
 void UTankAimingComponent::Fire()
 {
 	if (!ensure(Barrel && ProjectileBP)) { return; }
-	bool bCanFire = (LastFireTime + FireDelay) < (GetWorld()->GetTimeSeconds());
-	if (bCanFire)
+	if (FiringState != EFiringState::Reloading)
 	{
 		//Spawn projectile at barrel socket
 		AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBP, Barrel->GetSocketTransform(FName("Projectile")));
