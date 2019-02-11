@@ -6,10 +6,6 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
-//Forward declarations
-class UTankAimingComponent;
-class AProjectile;
-
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
@@ -22,23 +18,10 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	UPROPERTY(BlueprintReadOnly)
-		UTankAimingComponent* TankAimingComponent = nullptr;
 
 public:	
-	void AimAt(FVector HitLocation);
-	UFUNCTION(BlueprintCallable)
-		void Fire();
+	
 
 private:
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-		float LaunchSpeed = 7000.0f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-		TSubclassOf<AProjectile> ProjectileBP;
-	
-	float LastFireTime = 0;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-		float FireDelay = 5;
 };

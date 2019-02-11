@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
-#include "Tank.h"
+#include "TankAimingComponent.h"
 #include "Engine/World.h"
 
 #define OUT
@@ -10,7 +10,8 @@
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	PlayerTank = Cast<ATank>(GetPawn());
+	PlayerTank = GetPawn();
+	TankAimingComponent = PlayerTank->FindComponentByClass<UTankAimingComponent>();
 }
 
 // Called every frame
@@ -27,7 +28,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	if (GetAimRayHitLocation(OUT HitLocation))
 	{
 		//Aim barrel at point
-		PlayerTank->AimAt(HitLocation);
+		TankAimingComponent->AimAt(HitLocation);
 	}
 }
 

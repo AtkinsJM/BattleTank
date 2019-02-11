@@ -3,16 +3,23 @@
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
+#include "Projectile.h"
 #include "Kismet/GameplayStatics.h"
 #include "Math/Vector.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/Actor.h"
+#include "ConstructorHelpers.h"
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
+	//Assigns ProbjectileBP class (to avoid blueprint assign breaking on recompile
+	//TODO find alternate way of doing this
+	static ConstructorHelpers::FClassFinder<AProjectile> Proj(TEXT("/Game/Tank/Projectile_BP"));
+	if (Proj.Class)
+	{
+		ProjectileBP = Proj.Class;
+	}
 	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
@@ -34,7 +41,7 @@ void UTankAimingComponent::Initialise(UTankBarrel * BarrelToSet, UTankTurret * T
 	Turret = TurretToSet;
 }
 
-void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
+void UTankAimingComponent::AimAt(FVector HitLocation)
 {
 	if (!ensure(Barrel && Turret)) { return; }
 	FString TankName = GetOwner()->GetName();
@@ -76,4 +83,17 @@ void UTankAimingComponent::MoveTurret(FVector LaunchDirection)
 	FRotator DeltaRotator = LaunchRotator - TurretRotator;
 	float Direction = (DeltaRotator.Yaw / abs(DeltaRotator.Yaw));
 	Turret->Turn(Direction);
+}
+
+void UTankAimingComponent::Fire()
+{
+	if (!ensure(Barrel && ProjectileBP)) { return; }
+	bool bCanFire = (LastFireTime + FireDelay) < (GetWorld()->GetTimeSeconds());
+	if (bCanFire)
+	{
+		//Spawn projectile at barrel socket
+		AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBP, Barrel->GetSocketTransform(FName("Projectile")));
+		Projectile->Launch(LaunchSpeed);
+		LastFireTime = GetWorld()->GetTimeSeconds();
+	};
 }

@@ -7,7 +7,7 @@
 #include "TankPlayerController.generated.h"
 
 //Forward declarations
-class ATank;
+class UTankAimingComponent;
 /**
  * 
  */
@@ -19,13 +19,15 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
 
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	ATank* PlayerTank = nullptr;
+	AActor* PlayerTank = nullptr;
+	UTankAimingComponent* TankAimingComponent = nullptr;
 	UPROPERTY(EditDefaultsOnly)
 		float CrosshairPosX = 0.5f;
 	UPROPERTY(EditDefaultsOnly)
