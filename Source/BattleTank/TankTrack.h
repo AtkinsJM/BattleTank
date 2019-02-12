@@ -18,12 +18,14 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
+	void ApplySidewaysCorrectionForce();
+	
 public:
+	void SetThrottle(float Throttle);
 
 	UFUNCTION(BlueprintCallable, Category = "Input")
-		void SetThrottle(float Throttle);
+		void DriveTrack();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
 		float MaxDrivingForce = 60000000.0f;
@@ -31,4 +33,6 @@ public:
 private:
 	UFUNCTION()
 		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+
+	float CurrentThrottle = 0;
 };

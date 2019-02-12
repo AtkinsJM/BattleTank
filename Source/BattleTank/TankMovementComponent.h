@@ -22,10 +22,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 		void Initialise(UTankTrack * LeftTrackToSet, UTankTrack * RightTrackToSet);
 	UFUNCTION(BlueprintCallable)
-		void IntendMoveForward(float Throw);
-	UFUNCTION(BlueprintCallable)
-		void IntendTurn(float Throw);
-	UFUNCTION(BlueprintCallable)
 		void IntendMove(float XAxis, float YAxis);
 	
 private:

@@ -29,7 +29,7 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 	{
 		FiringState = EFiringState::Reloading;
 	}
-	else if(IsBarrelMoving())
+	else if(IsBarrelRotating())
 	{
 		FiringState = EFiringState::Aiming;
 	}
@@ -67,34 +67,37 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 	if (bHasLaunchVelocity)
 	{
 		AimDirection = LaunchVelocity.GetSafeNormal();
-		//TODO call IsBarrelMoving method here instead?
-		if (IsBarrelMoving())
+		FRotator AimRotator = AimDirection.Rotation();
+		//If barrel needs to rotate and get achieve desired rotation
+		if (IsBarrelRotating() && !(AimRotator.Pitch > MaxPitch || AimRotator.Pitch < MinPitch))
 		{
-			MoveBarrel(AimDirection);
-			MoveTurret(AimDirection);
+			MoveBarrel(AimRotator);
+			MoveTurret(AimRotator);
 		}
 	}
 }
 
-void UTankAimingComponent::MoveBarrel(FVector LaunchDirection)
+void UTankAimingComponent::MoveBarrel(FRotator LaunchRotator)
 {
 	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
-	FRotator LaunchRotator = LaunchDirection.Rotation();
 	FRotator DeltaRotator = LaunchRotator - BarrelRotator;
 	float Direction = (DeltaRotator.Pitch / abs(DeltaRotator.Pitch));
-	Barrel->Elevate(Direction);
+	Barrel->Elevate(Direction);	
 }
 
-void UTankAimingComponent::MoveTurret(FVector LaunchDirection)
+void UTankAimingComponent::MoveTurret(FRotator LaunchRotator)
 {
 	FRotator TurretRotator = Turret->GetForwardVector().Rotation();
-	FRotator LaunchRotator = LaunchDirection.Rotation();
 	FRotator DeltaRotator = LaunchRotator - TurretRotator;
 	float Direction = (DeltaRotator.Yaw / abs(DeltaRotator.Yaw));
+	if (FMath::Abs(DeltaRotator.Yaw) > 180)
+	{
+		Direction *= -1;
+	}
 	Turret->Turn(Direction);
 }
 
-bool UTankAimingComponent::IsBarrelMoving()
+bool UTankAimingComponent::IsBarrelRotating()
 {
 	if (!ensure(Barrel)) { return false; }
 	if (Barrel->GetForwardVector().Equals(AimDirection, AimTolerance))

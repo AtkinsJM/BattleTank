@@ -19,20 +19,9 @@ void UTankMovementComponent::Initialise(UTankTrack* LeftTrackToSet, UTankTrack* 
 	RightTrack = RightTrackToSet;
 }
 
-void UTankMovementComponent::IntendMoveForward(float Throw)
-{
-	LeftTrack->SetThrottle(Throw);
-	RightTrack->SetThrottle(Throw);
-}
-
-void UTankMovementComponent::IntendTurn(float Throw)
-{
-	LeftTrack->SetThrottle(Throw);
-	RightTrack->SetThrottle(-Throw);
-}
-
 void UTankMovementComponent::IntendMove(float XAxis, float YAxis)
 {
+	if (YAxis < 0) { XAxis *= -1; }
 	LeftTrack->SetThrottle(XAxis+YAxis);
 	RightTrack->SetThrottle(YAxis-XAxis);
 }

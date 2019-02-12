@@ -54,13 +54,18 @@ private:
 
 	UTankTurret* Turret = nullptr;
 	
-	void MoveBarrel(FVector LaunchDirection);
-	void MoveTurret(FVector LaunchDirection);
+	void MoveBarrel(FRotator LaunchRotator);
+	void MoveTurret(FRotator LaunchRotator);
 
-	bool IsBarrelMoving();
+	bool IsBarrelRotating();
 	FVector AimDirection = FVector(0);
-	float AimTolerance = 0.05f;
+	float AimTolerance = 0.01f;
 	float LastFireTime = 0;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		float MaxPitch = 30.0f;	//Degrees
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		float MinPitch = 0.0f;	//Degrees
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		float FireDelay = 5;
