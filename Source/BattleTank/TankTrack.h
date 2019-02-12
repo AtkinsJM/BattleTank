@@ -17,6 +17,7 @@ public:
 	UTankTrack();
 
 protected:
+	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
 public:
@@ -26,4 +27,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
 		float MaxDrivingForce = 60000000.0f;
+
+private:
+	UFUNCTION()
+		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 };
