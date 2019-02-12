@@ -13,13 +13,6 @@
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
 {
-	//Assigns ProbjectileBP class (to avoid blueprint assign breaking on recompile
-	//TODO find alternate way of doing this
-	static ConstructorHelpers::FClassFinder<AProjectile> Proj(TEXT("/Game/Tank/Projectile_BP"));
-	if (Proj.Class)
-	{
-		ProjectileBP = Proj.Class;
-	}
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
@@ -36,9 +29,13 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 	{
 		FiringState = EFiringState::Reloading;
 	}
-	else
+	else if(IsBarrelMoving())
 	{
 		FiringState = EFiringState::Aiming;
+	}
+	else
+	{
+		FiringState = EFiringState::Locked;
 	}
 }
 
@@ -69,9 +66,13 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 	);
 	if (bHasLaunchVelocity)
 	{
-		FVector LaunchDirection = LaunchVelocity.GetSafeNormal();
-		MoveBarrel(LaunchDirection);
-		MoveTurret(LaunchDirection);
+		AimDirection = LaunchVelocity.GetSafeNormal();
+		//TODO call IsBarrelMoving method here instead?
+		if (IsBarrelMoving())
+		{
+			MoveBarrel(AimDirection);
+			MoveTurret(AimDirection);
+		}
 	}
 }
 
@@ -91,6 +92,16 @@ void UTankAimingComponent::MoveTurret(FVector LaunchDirection)
 	FRotator DeltaRotator = LaunchRotator - TurretRotator;
 	float Direction = (DeltaRotator.Yaw / abs(DeltaRotator.Yaw));
 	Turret->Turn(Direction);
+}
+
+bool UTankAimingComponent::IsBarrelMoving()
+{
+	if (!ensure(Barrel)) { return false; }
+	if (Barrel->GetForwardVector().Equals(AimDirection, AimTolerance))
+	{
+		return false;
+	}
+	return true;
 }
 
 void UTankAimingComponent::Fire()

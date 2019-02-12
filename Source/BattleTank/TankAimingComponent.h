@@ -43,6 +43,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void Fire();
 	void AimAt(FVector HitLocation);
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Setup")
+		TSubclassOf<AProjectile> ProjectileBP;
 	UTankBarrel* Barrel = nullptr;
 
 private:
@@ -54,9 +57,9 @@ private:
 	void MoveBarrel(FVector LaunchDirection);
 	void MoveTurret(FVector LaunchDirection);
 
-	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-		TSubclassOf<AProjectile> ProjectileBP;
-
+	bool IsBarrelMoving();
+	FVector AimDirection = FVector(0);
+	float AimTolerance = 0.05f;
 	float LastFireTime = 0;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
