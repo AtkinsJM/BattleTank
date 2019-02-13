@@ -44,6 +44,8 @@ public:
 		void Fire();
 	void AimAt(FVector HitLocation);
 
+	EFiringState GetFiringState() const;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Setup")
 		TSubclassOf<AProjectile> ProjectileBP;
 	UTankBarrel* Barrel = nullptr;
@@ -54,8 +56,7 @@ private:
 
 	UTankTurret* Turret = nullptr;
 	
-	void MoveBarrel(FRotator LaunchRotator);
-	void MoveTurret(FRotator LaunchRotator);
+	void MoveBarrelAndTurret(FRotator LaunchRotator);
 
 	bool IsBarrelRotating();
 	FVector AimDirection = FVector(0);
@@ -63,7 +64,7 @@ private:
 	float LastFireTime = 0;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-		float MaxPitch = 30.0f;	//Degrees
+		float MaxPitch = 35.0f;	//Degrees
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		float MinPitch = 0.0f;	//Degrees
 

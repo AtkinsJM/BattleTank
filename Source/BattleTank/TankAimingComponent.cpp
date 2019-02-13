@@ -71,32 +71,29 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 		//If barrel needs to rotate and get achieve desired rotation
 		if (IsBarrelRotating() && !(AimRotator.Pitch > MaxPitch || AimRotator.Pitch < MinPitch))
 		{
-			MoveBarrel(AimRotator);
-			MoveTurret(AimRotator);
+			MoveBarrelAndTurret(AimRotator);
 		}
 	}
 }
 
-void UTankAimingComponent::MoveBarrel(FRotator LaunchRotator)
+EFiringState UTankAimingComponent::GetFiringState() const
 {
-	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
-	FRotator DeltaRotator = LaunchRotator - BarrelRotator;
-	float Direction = (DeltaRotator.Pitch / abs(DeltaRotator.Pitch));
-	Barrel->Elevate(Direction);	
+	return FiringState;
 }
 
-void UTankAimingComponent::MoveTurret(FRotator LaunchRotator)
+void UTankAimingComponent::MoveBarrelAndTurret(FRotator LaunchRotator)
 {
-	FRotator TurretRotator = Turret->GetForwardVector().Rotation();
-	FRotator DeltaRotator = LaunchRotator - TurretRotator;
-	float Direction = (DeltaRotator.Yaw / abs(DeltaRotator.Yaw));
+	FRotator BarrelTurretRotator = Barrel->GetForwardVector().Rotation();
+	FRotator DeltaRotator = LaunchRotator - BarrelTurretRotator;
+	float BarrelDirection = (DeltaRotator.Pitch / abs(DeltaRotator.Pitch));
+	Barrel->Elevate(BarrelDirection);
+	float TurretDirection = (DeltaRotator.Yaw / abs(DeltaRotator.Yaw));
 	if (FMath::Abs(DeltaRotator.Yaw) > 180)
 	{
-		Direction *= -1;
+		TurretDirection *= -1;
 	}
-	Turret->Turn(Direction);
+	Turret->Turn(TurretDirection);
 }
-
 bool UTankAimingComponent::IsBarrelRotating()
 {
 	if (!ensure(Barrel)) { return false; }

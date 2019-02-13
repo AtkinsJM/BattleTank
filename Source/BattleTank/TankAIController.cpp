@@ -29,7 +29,11 @@ void ATankAIController::Tick(float DeltaTime)
 		//Aim at player
 		//TODO change to GetActorLocation? Check difference
 		TankAimingComponent->AimAt(PlayerTank->GetTargetLocation());
-		//Fire
-		TankAimingComponent->Fire();
+		if (TankAimingComponent->GetFiringState() == EFiringState::Locked)
+		{
+			//Fire
+			TankAimingComponent->Fire();
+		}
+		
 	}
 }

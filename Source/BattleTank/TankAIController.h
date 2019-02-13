@@ -19,7 +19,8 @@ class BATTLETANK_API ATankAIController : public AAIController
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+	UPROPERTY(EditAnywhere, Category = "Firing")
+		float AcceptanceRadius = 7000.0f;
 
 private:
 	// Called every frame
@@ -27,6 +28,5 @@ private:
 	AActor* AITank;
 	AActor* PlayerTank;
 	UTankAimingComponent* TankAimingComponent = nullptr;
-
-	float AcceptanceRadius = 2000.0f;
+	
 };
