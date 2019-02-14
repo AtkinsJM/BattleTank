@@ -44,7 +44,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Firing")
 		void Fire();
 	UFUNCTION(BlueprintCallable, Category = "Firing")
-		int GetRoundsLeft() const;
+		int32 GetRoundsLeft() const;
 
 	void AimAt(FVector HitLocation);
 
@@ -74,6 +74,6 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		float FireDelay = 5;
-
-	int RoundsLeft = 5;
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		int32 RoundsLeft = 5;
 };
