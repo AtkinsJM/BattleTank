@@ -2,6 +2,9 @@
 
 #include "Projectile.h"
 #include "Components/PrimitiveComponent.h"
+#include "Components/ActorComponent.h"
+#include "Engine/World.h"
+#include "TimerManager.h"
 
 #define OUT
 
