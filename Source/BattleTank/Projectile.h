@@ -7,6 +7,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "PhysicsEngine/RadialForceComponent.h"
 #include "Projectile.generated.h"
 
 UCLASS()
@@ -27,6 +28,8 @@ protected:
 		UParticleSystemComponent* LaunchBlast = nullptr;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Setup")
 		UParticleSystemComponent* ImpactBlast = nullptr;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Setup")
+		URadialForceComponent* ExplosionForce = nullptr;
 
 public:	
 	void Launch(float Speed);
@@ -35,6 +38,11 @@ public:
 private:
 	UFUNCTION()
 		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+	
+	void OnTimerExpire();
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		float DestroyDelay = 5.0f;
 
 	UProjectileMovementComponent* ProjectileMovementComponent = nullptr;
 	
