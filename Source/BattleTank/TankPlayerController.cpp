@@ -70,5 +70,4 @@ void ATankPlayerController::OnTankDeath()
 {
 	bIsActive = false;
 	StartSpectatingOnly();
-	
 }

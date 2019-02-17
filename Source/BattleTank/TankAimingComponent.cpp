@@ -66,7 +66,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 		false,
 		0.0f,
 		0.0f,
-		ESuggestProjVelocityTraceOption::DoNotTrace
+		ESuggestProjVelocityTraceOption::TraceFullPath
 	);
 	if (bHasLaunchVelocity)
 	{
@@ -103,6 +103,7 @@ void UTankAimingComponent::MoveBarrelAndTurret(FRotator LaunchRotator)
 	}
 	Turret->Turn(TurretDirection);
 }
+
 bool UTankAimingComponent::IsBarrelRotating()
 {
 	if (!ensure(Barrel)) { return false; }
