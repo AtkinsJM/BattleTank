@@ -4,14 +4,18 @@
 #include "TankAimingComponent.h"
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
+#include "Tank.h"
 
 // Called when the game starts or when spawned
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	AITank = GetPawn();
-	PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
+	//TODO consider moving to SetPawn (to ensure pawn is set before attempting to retrieve
+	AITank = Cast<ATank>(GetPawn());
+	PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	if (!AITank) { return; }
 	TankAimingComponent = AITank->FindComponentByClass<UTankAimingComponent>();
+	AITank->OnDeath.AddUniqueDynamic(this, &ATankAIController::OnTankDeath);
 }
 
 // Called every frame
@@ -36,4 +40,9 @@ void ATankAIController::Tick(float DeltaTime)
 		}
 		
 	}
+}
+
+void ATankAIController::OnTankDeath()
+{
+	UE_LOG(LogTemp, Warning, TEXT("%s has died!"), *GetName());
 }

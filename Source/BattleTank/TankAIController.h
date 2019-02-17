@@ -8,6 +8,7 @@
 
 //Forward declarations
 class UTankAimingComponent;
+class ATank;
 /**
  * 
  */
@@ -25,8 +26,11 @@ protected:
 private:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	AActor* AITank;
-	AActor* PlayerTank;
+	ATank* AITank;
+	ATank* PlayerTank;
 	UTankAimingComponent* TankAimingComponent = nullptr;
+
+	UFUNCTION()
+		void OnTankDeath();
 	
 };

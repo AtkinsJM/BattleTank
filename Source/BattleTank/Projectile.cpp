@@ -5,6 +5,8 @@
 #include "Components/ActorComponent.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/DamageType.h"
 
 #define OUT
 
@@ -53,6 +55,8 @@ void AProjectile::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor,
 	ExplosionForce->FireImpulse();
 	SetRootComponent(ImpactBlast);
 	CollisionMesh->DestroyComponent();
+
+	UGameplayStatics::ApplyRadialDamage(this, ProjectileDamage, GetActorLocation(), ExplosionForce->Radius, UDamageType::StaticClass(), TArray<AActor*>());
 
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(OUT TimerHandle, this, &AProjectile::OnTimerExpire, DestroyDelay);
