@@ -73,7 +73,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 		AimDirection = LaunchVelocity.GetSafeNormal();
 		FRotator AimRotator = AimDirection.Rotation();
 		//If barrel needs to rotate and get achieve desired rotation
-		if (IsBarrelRotating() && !(AimRotator.Pitch > MaxPitch || AimRotator.Pitch < MinPitch))
+		if (IsBarrelRotating())// && !(AimRotator.Pitch > MaxPitch || AimRotator.Pitch < MinPitch))
 		{
 			MoveBarrelAndTurret(AimRotator);
 		}

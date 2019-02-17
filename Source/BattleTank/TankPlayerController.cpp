@@ -3,6 +3,7 @@
 #include "TankPlayerController.h"
 #include "TankAimingComponent.h"
 #include "Engine/World.h"
+#include "Tank.h"
 
 #define OUT
 
@@ -10,15 +11,20 @@
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	PlayerTank = GetPawn();
+	PlayerTank = Cast<ATank>(GetPawn());
+	if (!PlayerTank) { return; }
 	TankAimingComponent = PlayerTank->FindComponentByClass<UTankAimingComponent>();
+	PlayerTank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnTankDeath);
 }
 
 // Called every frame
 void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	AimTowardsCrosshair();
+	if (bIsActive)
+	{
+		AimTowardsCrosshair();
+	}
 }
 
 void ATankPlayerController::AimTowardsCrosshair()
@@ -46,7 +52,9 @@ bool ATankPlayerController::GetAimRayHitLocation(OUT FVector& HitLocation) const
 		//Linetrace along look direction and get hit
 		FHitResult HitResult;
 		FVector LineEnd = LineStart + (LookDirection * LineTraceRange);
-		if (GetWorld()->LineTraceSingleByChannel(HitResult, LineStart, LineEnd, ECC_Visibility))
+		FCollisionQueryParams CollisionParameters;
+		CollisionParameters.AddIgnoredActor(PlayerTank);
+		if (GetWorld()->LineTraceSingleByChannel(HitResult, LineStart, LineEnd, ECC_Camera, CollisionParameters))
 		{
 			HitLocation = HitResult.Location;
 			return true;
@@ -56,4 +64,11 @@ bool ATankPlayerController::GetAimRayHitLocation(OUT FVector& HitLocation) const
 	};
 	UE_LOG(LogTemp, Warning, TEXT("Unable to deproject screen position to world."));
 	return false;
+}
+
+void ATankPlayerController::OnTankDeath()
+{
+	bIsActive = false;
+	StartSpectatingOnly();
+	
 }

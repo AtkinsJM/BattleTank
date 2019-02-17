@@ -8,6 +8,7 @@
 
 //Forward declarations
 class UTankAimingComponent;
+class ATank;
 /**
  * 
  */
@@ -26,7 +27,15 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	AActor* PlayerTank = nullptr;
+	UFUNCTION()
+		void OnTankDeath();
+
+	//Moves tank barrel to point towards crosshair
+	void AimTowardsCrosshair();
+	bool GetAimRayHitLocation(OUT FVector& HitLocation) const;
+	bool GetLookVectorHitLocation(FVector WorldLocation, FVector LookDirection, OUT FVector& HitLocation) const;
+
+	ATank* PlayerTank = nullptr;
 	UTankAimingComponent* TankAimingComponent = nullptr;
 	UPROPERTY(EditDefaultsOnly)
 		float CrosshairPosX = 0.5f;
@@ -34,8 +43,6 @@ private:
 		float CrosshairPosY = 0.333f;
 	UPROPERTY(EditDefaultsOnly)
 		float LineTraceRange = 1000000.0f;
-	//Moves tank barrel to point towards crosshair
-	void AimTowardsCrosshair();
-	bool GetAimRayHitLocation(OUT FVector& HitLocation) const;
-	bool GetLookVectorHitLocation(FVector WorldLocation, FVector LookDirection, OUT FVector& HitLocation) const;
+	
+	bool bIsActive = true;
 };

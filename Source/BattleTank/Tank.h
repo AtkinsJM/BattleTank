@@ -31,5 +31,5 @@ public:
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		float MaxHealth = 100.0f;
-	float CurrentHealth = MaxHealth;
+	float CurrentHealth;
 };
