@@ -28,11 +28,19 @@ public:
 
 
 private:
-	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
 		UPhysicsConstraintComponent* PhysicsConstraint = nullptr;
-	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
 		UStaticMeshComponent* Wheel = nullptr;
-	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
 		UStaticMeshComponent* Mass = nullptr;
-
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Physics Constraint")
+		float VerticalLinearLimit = 100.0f;	
+	UPROPERTY(EditDefaultsOnly, Category = "Physics Constraint")
+		float LinearDrivePositionStrength = 50.0f;
+	UPROPERTY(EditDefaultsOnly, Category = "Physics Constraint")
+		float LinearDriveVelocityStrength = 10.0f;
+	UPROPERTY(EditDefaultsOnly, Category = "Physics Constraint")
+		float VerticalOffset = 100.0f;
 };
