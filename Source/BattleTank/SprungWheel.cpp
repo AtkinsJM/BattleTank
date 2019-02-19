@@ -17,23 +17,24 @@ ASprungWheel::ASprungWheel()
 	//Create physics constraint component and set as root
 	PhysicsConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("Physics Constraint"));
 	SetRootComponent(PhysicsConstraint);
-	
+	/*
 	//Create and initialise mass static mesh component
 	Mass = CreateDefaultSubobject<UStaticMeshComponent>(FName("Mass"));
-	Mass->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	Mass->SetupAttachment(RootComponent);
+	Mass->SetMobility(EComponentMobility::Movable);
 	Mass->SetRelativeLocation(FVector(0.0f, 0.0f, VerticalOffset));
 	Mass->SetSimulatePhysics(true);
 	if (StaticMesh) { Mass->SetStaticMesh(StaticMesh); }
-
+	*/
 	//Create and initialise wheel static mesh component
 	Wheel = CreateDefaultSubobject<UStaticMeshComponent>(FName("Wheel"));
-	Wheel->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	Wheel->SetupAttachment(RootComponent);
+	Wheel->SetMobility(EComponentMobility::Movable);
 	Wheel->SetRelativeLocation(FVector(0.0f, 0.0f, -VerticalOffset));
 	Wheel->SetSimulatePhysics(true);
 	if (StaticMesh) { Wheel->SetStaticMesh(StaticMesh); }
-	
+
 	//Initialise physics constraint
-	PhysicsConstraint->SetConstrainedComponents(Mass, FName("None"), Wheel, FName("None"));
 	PhysicsConstraint->SetLinearXLimit(ELinearConstraintMotion::LCM_Locked, 0.0f);
 	PhysicsConstraint->SetLinearYLimit(ELinearConstraintMotion::LCM_Locked, 0.0f);
 	PhysicsConstraint->SetLinearZLimit(ELinearConstraintMotion::LCM_Limited, VerticalLinearLimit);
@@ -48,14 +49,17 @@ ASprungWheel::ASprungWheel()
 void ASprungWheel::BeginPlay()
 {
 	Super::BeginPlay();
-	if (GetAttachParentActor())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Parent actor found!"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Parent actor not found!"));
-	}
+	SetupConstraint();
+}
+
+void ASprungWheel::SetupConstraint()
+{
+	if (!GetAttachParentActor()) { return; }
+	UPrimitiveComponent* VehicleBody = Cast<UPrimitiveComponent>(GetAttachParentActor()->GetRootComponent());
+	if (!VehicleBody || !Wheel) { return; }
+	//Set constrained components (at run time to aovid warning about mesh mobility)
+	Wheel->SetMassOverrideInKg(NAME_None, VehicleBody->GetMass() / 10.0f, true);
+	PhysicsConstraint->SetConstrainedComponents(VehicleBody, NAME_None, Wheel, NAME_None);
 }
 
 // Called every frame
