@@ -36,8 +36,6 @@ private:
 		UPhysicsConstraintComponent* PhysicsConstraint = nullptr;
 	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
 		UStaticMeshComponent* Wheel = nullptr;
-	//UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
-	//	UStaticMeshComponent* Mass = nullptr;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Physics Constraint")
 		float VerticalLinearLimit = 100.0f;	

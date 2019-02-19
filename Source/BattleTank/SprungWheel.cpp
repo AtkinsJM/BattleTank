@@ -17,15 +17,7 @@ ASprungWheel::ASprungWheel()
 	//Create physics constraint component and set as root
 	PhysicsConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("Physics Constraint"));
 	SetRootComponent(PhysicsConstraint);
-	/*
-	//Create and initialise mass static mesh component
-	Mass = CreateDefaultSubobject<UStaticMeshComponent>(FName("Mass"));
-	Mass->SetupAttachment(RootComponent);
-	Mass->SetMobility(EComponentMobility::Movable);
-	Mass->SetRelativeLocation(FVector(0.0f, 0.0f, VerticalOffset));
-	Mass->SetSimulatePhysics(true);
-	if (StaticMesh) { Mass->SetStaticMesh(StaticMesh); }
-	*/
+	
 	//Create and initialise wheel static mesh component
 	Wheel = CreateDefaultSubobject<UStaticMeshComponent>(FName("Wheel"));
 	Wheel->SetupAttachment(RootComponent);
