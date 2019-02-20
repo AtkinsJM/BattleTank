@@ -1,0 +1,10 @@
+diff a/Source/BattleTank/SprungWheel.h b/Source/BattleTank/SprungWheel.h	(rejected hunks)
+@@ -36,8 +36,6 @@
+ 		UPhysicsConstraintComponent* PhysicsConstraint = nullptr;
+ 	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
+ 		UStaticMeshComponent* Wheel = nullptr;
+-	//UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
+-	//	UStaticMeshComponent* Mass = nullptr;
+ 	
+ 	UPROPERTY(EditDefaultsOnly, Category = "Physics Constraint")
+ 		float VerticalLinearLimit = 100.0f;	

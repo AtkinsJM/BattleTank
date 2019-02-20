@@ -22,7 +22,13 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	
+	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
+		UPhysicsConstraintComponent* AxleConstraint = nullptr;
+	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
+		UStaticMeshComponent* Wheel = nullptr;
+	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
+		UStaticMeshComponent* Axle = nullptr;
+
 
 public:	
 	// Called every frame
@@ -32,10 +38,6 @@ public:
 private:
 	void SetupConstraint();
 
-	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
-		UPhysicsConstraintComponent* PhysicsConstraint = nullptr;
-	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
-		UStaticMeshComponent* Wheel = nullptr;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Physics Constraint")
 		float VerticalLinearLimit = 100.0f;	
@@ -44,5 +46,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Physics Constraint")
 		float LinearDriveVelocityStrength = 10.0f;
 	UPROPERTY(EditDefaultsOnly, Category = "Physics Constraint")
-		float VerticalOffset = 100.0f;
+		float AxleOffset = 100.0f;
+	UPROPERTY(EditDefaultsOnly, Category = "Physics Constraint")
+		float WheelOffset = 100.0f;
 };
