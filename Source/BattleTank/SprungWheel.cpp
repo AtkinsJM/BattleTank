@@ -67,6 +67,7 @@ void ASprungWheel::SetupConstraint()
 	UPrimitiveComponent* VehicleBody = Cast<UPrimitiveComponent>(GetAttachParentActor()->GetRootComponent());
 	if (!VehicleBody || !Axle || !Wheel || !AxleConstraint || !WheelConstraint) { return; }
 	//Set constrained components (at run time to aovid warning about mesh mobility)
+	UE_LOG(LogTemp, Warning, TEXT("Setting constrained components."));
 	Axle->SetMassOverrideInKg(NAME_None, VehicleBody->GetMass() / 10.0f, true);
 	Wheel->SetMassOverrideInKg(NAME_None, VehicleBody->GetMass() / 10.0f, true);
 	AxleConstraint->SetConstrainedComponents(VehicleBody, NAME_None, Axle, NAME_None);
