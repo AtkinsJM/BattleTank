@@ -24,7 +24,7 @@ public:
 		void DriveTrack(float CurrentThrottle);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
-		float MaxDrivingForce = 60000000.0f;
+		float MaxDrivingForce = 80000000.0f;
 
 private:
 	TArray<ASprungWheel*> GetWheels() const;

@@ -46,6 +46,5 @@ TArray<ASprungWheel*> UTankTrack::GetWheels() const
 		}
 	}
 	int NumberOfWheels = Wheels.Num();
-	UE_LOG(LogTemp, Warning, TEXT("%s has %d wheels."), *GetName(), NumberOfWheels);
 	return Wheels;
 }

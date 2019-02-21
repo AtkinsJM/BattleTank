@@ -24,7 +24,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
-		UPhysicsConstraintComponent* AxleConstraint1 = nullptr;
+		UPhysicsConstraintComponent* AxleConstraint = nullptr;
 	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
 		UPhysicsConstraintComponent* WheelConstraint = nullptr;
 	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
@@ -42,13 +42,17 @@ public:
 private:
 	void SetupConstraint();
 
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Physics Constraint")
-		float VerticalLinearLimit = 100.0f;	
+		float VerticalLinearLimit = 25.0f;	
 	UPROPERTY(EditDefaultsOnly, Category = "Physics Constraint")
-		float LinearDrivePositionStrength = 50.0f;
+		float LinearDrivePositionStrength = 75.0f;
 	UPROPERTY(EditDefaultsOnly, Category = "Physics Constraint")
 		float LinearDriveVelocityStrength = 10.0f;
 	UPROPERTY(EditDefaultsOnly, Category = "Physics Constraint")
-		float AxleOffset = 100.0f;
+		float AxleOffset = 85.0f;
+
+	float CurrentForce = 0.0f;
 };
