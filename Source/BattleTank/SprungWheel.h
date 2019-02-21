@@ -8,6 +8,7 @@
 
 class UPhysicsConstraintComponent;
 class UStaticMeshComponent;
+class USphereComponent;
 
 UCLASS()
 class BATTLETANK_API ASprungWheel : public AActor
@@ -25,9 +26,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
 		UPhysicsConstraintComponent* AxleConstraint = nullptr;
 	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
-		UStaticMeshComponent* Wheel = nullptr;
+		UPhysicsConstraintComponent* WheelConstraint = nullptr;
 	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
-		UStaticMeshComponent* Axle = nullptr;
+		USphereComponent* Wheel = nullptr;
+	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
+		USphereComponent* Axle = nullptr;
 
 
 public:	
@@ -47,6 +50,4 @@ private:
 		float LinearDriveVelocityStrength = 10.0f;
 	UPROPERTY(EditDefaultsOnly, Category = "Physics Constraint")
 		float AxleOffset = 100.0f;
-	UPROPERTY(EditDefaultsOnly, Category = "Physics Constraint")
-		float WheelOffset = 100.0f;
 };
