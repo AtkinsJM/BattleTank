@@ -3,42 +3,49 @@
 #include "TankTrack.h"
 #include "Components/PrimitiveComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "SprungWheel.h"
+#include "SpawnPoint.h"
+
+#define OUT
 
 UTankTrack::UTankTrack()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UTankTrack::BeginPlay()
-{
-	Super::BeginPlay();
-	OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
-}
-
-void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
-{
-	DriveTrack();
-	ApplySidewaysCorrectionForce();
-}
-
-void UTankTrack::DriveTrack()
-{
-	FVector AppliedForce = GetForwardVector() * CurrentThrottle * MaxDrivingForce;
-	FVector ForceLocation = GetComponentLocation();
-	UPrimitiveComponent* TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
-	TankRoot->AddForceAtLocation(AppliedForce, ForceLocation);
-}
-
-void UTankTrack::ApplySidewaysCorrectionForce()
-{
-	float SidewaysSpeed = FVector::DotProduct(GetComponentVelocity(), GetRightVector());
-	FVector CorrectionAcceleration = (SidewaysSpeed / GetWorld()->GetDeltaSeconds()) * -GetRightVector();
-	UStaticMeshComponent* TankRoot = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
-	FVector CorrectionForce = (TankRoot->GetMass() * CorrectionAcceleration) / 2;
-	TankRoot->AddForce(CorrectionForce);
-}
-
 void UTankTrack::SetThrottle(float Throttle)
 {
-	CurrentThrottle = Throttle;
+	DriveTrack(Throttle);
+}
+
+void UTankTrack::DriveTrack(float CurrentThrottle)
+{
+	float AppliedForce = CurrentThrottle * MaxDrivingForce;
+	TArray<ASprungWheel*> Wheels = GetWheels();
+	float ForcePerWheel = AppliedForce / Wheels.Num();
+	for (ASprungWheel* Wheel : Wheels)
+	{
+		Wheel->AddDrivingForce(ForcePerWheel);
+	}
+}
+
+TArray<ASprungWheel*> UTankTrack::GetWheels() const
+{
+	TArray<USceneComponent*> Children;
+	GetChildrenComponents(false, OUT Children);
+	TArray<ASprungWheel*> Wheels;
+	for (USceneComponent* Child : Children)
+	{
+		USpawnPoint* SpawnPointObj = Cast<USpawnPoint>(Child);
+		if(SpawnPointObj) 
+		{
+			if (SpawnPointObj->GetWheel())
+			{
+				Wheels.Add(SpawnPointObj->GetWheel());
+			}
+		}
+	}
+	int NumberOfWheels = Wheels.Num();
+	UE_LOG(LogTemp, Warning, TEXT("%s has %d wheels."), *GetName(), NumberOfWheels);
+	return Wheels;
 }

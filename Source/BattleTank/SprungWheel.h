@@ -24,7 +24,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
-		UPhysicsConstraintComponent* AxleConstraint = nullptr;
+		UPhysicsConstraintComponent* AxleConstraint1 = nullptr;
 	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
 		UPhysicsConstraintComponent* WheelConstraint = nullptr;
 	UPROPERTY(VisibleAnywhere, Category = "Physics Constraint")
@@ -37,6 +37,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void AddDrivingForce(float ForceMagnitude);
 
 private:
 	void SetupConstraint();

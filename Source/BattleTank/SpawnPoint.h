@@ -27,5 +27,10 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Setup")
 		TSubclassOf<ASprungWheel> SprungWheelBP;
+
+	ASprungWheel* GetWheel() const;
 		
+
+private:
+	ASprungWheel* SprungWheel = nullptr;
 };

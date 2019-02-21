@@ -13,8 +13,8 @@ ASprungWheel::ASprungWheel()
 	PrimaryActorTick.bCanEverTick = true;
 	
 	//Create physics constraint component and set as root
-	AxleConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("Axle Constraint"));
-	SetRootComponent(AxleConstraint);
+	AxleConstraint1 = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("Axle Constraint"));
+	SetRootComponent(AxleConstraint1);
 	
 	//Create and initialise mass static mesh component
 	Axle = CreateDefaultSubobject<USphereComponent>(FName("Axle"));
@@ -39,14 +39,14 @@ ASprungWheel::ASprungWheel()
 	Wheel->bHiddenInGame = false;
 	
 	//Initialise physics constraint
-	AxleConstraint->SetLinearXLimit(ELinearConstraintMotion::LCM_Locked, 0.0f);
-	AxleConstraint->SetLinearYLimit(ELinearConstraintMotion::LCM_Locked, 0.0f);
-	AxleConstraint->SetLinearZLimit(ELinearConstraintMotion::LCM_Limited, VerticalLinearLimit);
-	AxleConstraint->SetAngularSwing1Limit(EAngularConstraintMotion::ACM_Locked, 0.0f);
-	AxleConstraint->SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Locked, 0.0f);
-	AxleConstraint->SetAngularTwistLimit(EAngularConstraintMotion::ACM_Locked, 0.0f);
-	AxleConstraint->SetLinearPositionDrive(false, false, true);
-	AxleConstraint->SetLinearDriveParams(LinearDrivePositionStrength, LinearDriveVelocityStrength, 0.0f);
+	AxleConstraint1->SetLinearXLimit(ELinearConstraintMotion::LCM_Locked, 0.0f);
+	AxleConstraint1->SetLinearYLimit(ELinearConstraintMotion::LCM_Locked, 0.0f);
+	AxleConstraint1->SetLinearZLimit(ELinearConstraintMotion::LCM_Limited, VerticalLinearLimit);
+	AxleConstraint1->SetAngularSwing1Limit(EAngularConstraintMotion::ACM_Locked, 0.0f);
+	AxleConstraint1->SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Locked, 0.0f);
+	AxleConstraint1->SetAngularTwistLimit(EAngularConstraintMotion::ACM_Locked, 0.0f);
+	AxleConstraint1->SetLinearPositionDrive(false, false, true);
+	AxleConstraint1->SetLinearDriveParams(LinearDrivePositionStrength, LinearDriveVelocityStrength, 0.0f);
 	
 	WheelConstraint->SetAngularSwing1Limit(EAngularConstraintMotion::ACM_Locked, 0.0f);
 	WheelConstraint->SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Free, 0.0f);
@@ -65,12 +65,12 @@ void ASprungWheel::SetupConstraint()
 {
 	if (!GetAttachParentActor()) { return; }
 	UPrimitiveComponent* VehicleBody = Cast<UPrimitiveComponent>(GetAttachParentActor()->GetRootComponent());
-	if (!VehicleBody || !Axle || !Wheel || !AxleConstraint || !WheelConstraint) { return; }
+	if (!VehicleBody || !Axle || !Wheel || !AxleConstraint1 || !WheelConstraint) { return; }
 	//Set constrained components (at run time to aovid warning about mesh mobility)
 	UE_LOG(LogTemp, Warning, TEXT("Setting constrained components."));
 	Axle->SetMassOverrideInKg(NAME_None, VehicleBody->GetMass() / 10.0f, true);
 	Wheel->SetMassOverrideInKg(NAME_None, VehicleBody->GetMass() / 10.0f, true);
-	AxleConstraint->SetConstrainedComponents(VehicleBody, NAME_None, Axle, NAME_None);
+	AxleConstraint1->SetConstrainedComponents(VehicleBody, NAME_None, Axle, NAME_None);
 	WheelConstraint->SetConstrainedComponents(Axle, NAME_None, Wheel, NAME_None);
 }
 
@@ -79,5 +79,10 @@ void ASprungWheel::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ASprungWheel::AddDrivingForce(float ForceMagnitude)
+{
+	Wheel->AddForce(Axle->GetForwardVector() * ForceMagnitude);
 }
 
